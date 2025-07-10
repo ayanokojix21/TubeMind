@@ -24,3 +24,4 @@ faiss-cpu
 
 # Retriever
 youtube-transcript-api
+google-api-python-client
