@@ -7,10 +7,12 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-if "GROQ_API_KEY" in st.secrets:
-    os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
-if "HUGGINGFACEHUB_API_TOKEN" in st.secrets:
-    os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
+try:
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY") or st.secrets["GROQ_API_KEY"]
+    HUGGINGFACEHUB_API_TOKEN = os.getenv("HUGGINGFACEHUB_API_TOKEN") or st.secrets["HUGGINGFACEHUB_API_TOKEN"]
+except Exception:
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    HUGGINGFACEHUB_API_TOKEN = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
 st.set_page_config(page_title="TubeMind", page_icon="🎥", layout="wide")
 
