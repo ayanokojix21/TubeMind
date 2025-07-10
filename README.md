@@ -29,7 +29,7 @@ TubeMind is a multimodal, memory-enabled AI platform that combines Retrieval-Aug
 
 ---
 
-## 🛠️ Local Installation
+## Local Installation
 
 Follow these steps to run **TubeMind** locally on your machine.
 
