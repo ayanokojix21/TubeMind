@@ -1,0 +1,26 @@
+# LangChain Core
+langchain 
+langchain-core
+langchain-community
+requests 
+
+# Groq/OpenAI-Compatible API Integration
+langchain-groq
+
+# HuggingFace Integration
+langchain-huggingface 
+transformers
+huggingface-hub
+sentence-transformers
+
+# Environment Variable Management
+python-dotenv
+
+# User Interface
+streamlit
+
+# Vector Stores
+faiss-cpu
+
+# Retriever
+youtube-transcript-api
