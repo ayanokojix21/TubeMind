@@ -7,8 +7,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY", "")
-HUGGINGFACEHUB_API_TOKEN = os.getenv("HUGGINGFACEHUB_API_TOKEN") or st.secrets.get("HUGGINGFACEHUB_API_TOKEN", "")
+if "GROQ_API_KEY" in st.secrets:
+    os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
+if "HUGGINGFACEHUB_API_TOKEN" in st.secrets:
+    os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
 
 st.set_page_config(page_title="TubeMind", page_icon="🎥", layout="wide")
 
@@ -27,22 +29,27 @@ st.markdown("""
 st.divider()
 st.subheader("🔐 API Key Configuration")
 
-user_groq_api = st.text_input("Groq API Key", type="password", value=GROQ_API_KEY)
-user_hf_api = st.text_input("HuggingFace API Key", type="password", value=HUGGINGFACEHUB_API_TOKEN)
+default_groq = os.environ.get("GROQ_API_KEY", "")
+default_hf = os.environ.get("HUGGINGFACEHUB_API_TOKEN", "")
 
-if user_groq_api: os.environ["GROQ_API_KEY"] = user_groq_api
-if user_hf_api: os.environ["HUGGINGFACEHUB_API_TOKEN"] = user_hf_api
+user_groq_api = st.text_input("Groq API Key", type="password", value=default_groq)
+user_hf_api = st.text_input("HuggingFace API Key", type="password", value=default_hf)
 
-required = {
-    "Groq API Key": "GROQ_API_KEY",
-    "HuggingFace API Key": "HUGGINGFACEHUB_API_TOKEN",
+if user_groq_api:
+    os.environ["GROQ_API_KEY"] = user_groq_api
+if user_hf_api:
+    os.environ["HUGGINGFACEHUB_API_TOKEN"] = user_hf_api
+
+required_keys = {
+    "Groq API Key": os.environ.get("GROQ_API_KEY"),
+    "HuggingFace API Key": os.environ.get("HUGGINGFACEHUB_API_TOKEN"),
 }
-missing = [name for name, key in required.items() if not os.environ.get(key)]
+missing_keys = [name for name, val in required_keys.items() if not val]
 
-if missing:
-    st.warning(f"⚠️ Please set the following API keys: {', '.join(missing)}")
+if missing_keys:
+    st.warning(f"⚠️ Please set the following API keys to proceed: {', '.join(missing_keys)}")
 else:
     st.success("✅ All required API keys are set! You're good to go.")
 
 st.markdown("---")
-st.info("ℹ️ Tip: In local runs, use `.env`. On Streamlit Cloud, use `Secrets`. You can also enter keys above manually.")
+st.info("ℹ️ Tip: In local runs, use a `.env` file. On Streamlit Cloud, use `Secrets`. You can also enter keys manually above.")
